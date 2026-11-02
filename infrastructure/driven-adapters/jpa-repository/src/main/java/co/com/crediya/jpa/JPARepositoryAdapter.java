@@ -1,20 +1,47 @@
 package co.com.crediya.jpa;
 
-import co.com.crediya.jpa.helper.AdapterOperations;
+import co.com.crediya.model.user.User;
+import co.com.crediya.model.user.gateways.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public class JPARepositoryAdapter extends AdapterOperations<Object/* change for domain model */, Object/* change for adapter model */, String, JPARepository>
-// implements ModelRepository from domain
-{
+import java.util.ArrayList;
+import java.util.List;
 
-    public JPARepositoryAdapter(JPARepository repository, ObjectMapper mapper) {
-        /**
-         *  Could be use mapper.mapBuilder if your domain model implement builder pattern
-         *  super(repository, mapper, d -> mapper.mapBuilder(d,ObjectModel.ObjectModelBuilder.class).build());
-         *  Or using mapper.map with the class of the object model
-         */
-        super(repository, mapper, d -> mapper.map(d, Object.class/* change for domain model */));
+@Repository
+@RequiredArgsConstructor
+public class JPARepositoryAdapter implements UserRepository {
+
+    private final JPARepository repository;
+    private final ObjectMapper mapper;
+
+    @Override
+    public void saveUser(User user) {
+        repository.save(mapper.map(user, UserEntity.class));
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
+        repository.findAll().forEach(e -> users.add(mapper.map(e, User.class)));
+        return users;
+    }
+
+    @Override
+    public User getUserByIdNumber(Long idNumber) {
+        return repository.findById(idNumber)
+                .map(e -> mapper.map(e, User.class))
+                .orElse(null);
+    }
+
+    @Override
+    public User editUser(User user) {
+        return mapper.map(repository.save(mapper.map(user, UserEntity.class)), User.class);
+    }
+
+    @Override
+    public void deleteUser(Long idNumber) {
+        repository.deleteById(idNumber);
     }
 }
