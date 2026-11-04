@@ -1,6 +1,6 @@
 package co.com.crediya.api;
 
-import co.com.bancolombia.api.config.CorsConfig;
+import co.com.crediya.api.config.CorsConfig;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +16,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
                 type = FilterType.ASSIGNABLE_TYPE,
                 classes = CorsConfig.class
         ))
-@Import(ApiRest.class)
+@Import(UsuarioController.class)
 public class TestConfig {
 }

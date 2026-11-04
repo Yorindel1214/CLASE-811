@@ -1,7 +1,7 @@
 package co.com.crediya.jpa;
 
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.QueryByExampleExecutor;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface JPARepository extends CrudRepository<UserEntity, Long>, QueryByExampleExecutor<UserEntity> {
+public interface JPARepository extends JpaRepository<UsuarioEntity, Long> {
+    boolean existsByCorreoElectronico(String correoElectronico);
 }

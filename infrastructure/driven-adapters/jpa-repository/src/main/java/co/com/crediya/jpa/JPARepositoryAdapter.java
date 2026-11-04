@@ -1,47 +1,40 @@
 package co.com.crediya.jpa;
 
-import co.com.crediya.model.user.User;
-import co.com.crediya.model.user.gateways.UserRepository;
+import co.com.crediya.model.usuario.Usuario;
+import co.com.crediya.model.usuario.exceptions.CorreoYaRegistradoException;
+import co.com.crediya.model.usuario.gateways.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.reactivecommons.utils.ObjectMapper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-
+@Slf4j
 @Repository
 @RequiredArgsConstructor
-public class JPARepositoryAdapter implements UserRepository {
+public class JPARepositoryAdapter implements UsuarioRepository {
 
     private final JPARepository repository;
     private final ObjectMapper mapper;
 
     @Override
-    public void saveUser(User user) {
-        repository.save(mapper.map(user, UserEntity.class));
+    @Transactional
+    public Usuario guardar(Usuario usuario) {
+        log.info("Guardando usuario con correo {}", usuario.getCorreoElectronico());
+        try {
+            UsuarioEntity guardado = repository.saveAndFlush(mapper.map(usuario, UsuarioEntity.class));
+            log.info("Usuario guardado con id {}", guardado.getId());
+            return mapper.map(guardado, Usuario.class);
+        } catch (DataIntegrityViolationException e) {
+            log.warn("Violación de integridad al guardar usuario: {}", e.getMessage());
+            throw new CorreoYaRegistradoException(usuario.getCorreoElectronico());
+        }
     }
 
     @Override
-    public List<User> getAllUsers() {
-        List<User> users = new ArrayList<>();
-        repository.findAll().forEach(e -> users.add(mapper.map(e, User.class)));
-        return users;
-    }
-
-    @Override
-    public User getUserByIdNumber(Long idNumber) {
-        return repository.findById(idNumber)
-                .map(e -> mapper.map(e, User.class))
-                .orElse(null);
-    }
-
-    @Override
-    public User editUser(User user) {
-        return mapper.map(repository.save(mapper.map(user, UserEntity.class)), User.class);
-    }
-
-    @Override
-    public void deleteUser(Long idNumber) {
-        repository.deleteById(idNumber);
+    @Transactional(readOnly = true)
+    public boolean existePorCorreo(String correoElectronico) {
+        return repository.existsByCorreoElectronico(correoElectronico);
     }
 }
