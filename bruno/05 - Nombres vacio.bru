@@ -1,0 +1,35 @@
+meta {
+  name: 05 - Nombres vacio
+  type: http
+  seq: 5
+}
+
+post {
+  url: http://localhost:8080/api/v1/usuarios
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nombres": "",
+    "apellidos": "Gómez",
+    "correo_electronico": "luis@correo.com",
+    "salario_base": 3000000
+  }
+}
+
+tests {
+  test("responde 400 Bad Request", function () {
+    expect(res.getStatus()).to.equal(400);
+  });
+
+  test("explica que nombres es obligatorio", function () {
+    expect(res.getBody().error).to.equal("El campo nombres es obligatorio");
+  });
+}
+
+docs {
+  Criterio: nombres, apellidos, correo_electronico y salario_base no pueden
+  estar vacios. Esperado: 400.
+}

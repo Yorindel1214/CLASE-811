@@ -1,0 +1,45 @@
+meta {
+  name: 01 - Registrar usuario exitoso
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:8080/api/v1/usuarios
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nombres": "Carlos",
+    "apellidos": "Ruiz",
+    "fecha_nacimiento": "1992-08-15",
+    "direccion": "Calle 5 # 10-20",
+    "telefono": "3005551234",
+    "correo_electronico": "{{correoNuevo}}",
+    "salario_base": 5000000
+  }
+}
+
+script:pre-request {
+  // Genera un correo distinto en cada ejecucion para que siempre responda 201
+  bru.setVar("correoNuevo", "carlos" + Date.now() + "@correo.com");
+}
+
+tests {
+  test("responde 201 Created", function () {
+    expect(res.getStatus()).to.equal(201);
+  });
+
+  test("devuelve el usuario guardado con su id", function () {
+    const body = res.getBody();
+    expect(body.id).to.be.a("number");
+    expect(body.correo_electronico).to.equal(bru.getVar("correoNuevo"));
+  });
+}
+
+docs {
+  Criterio: se puede registrar un solicitante con sus datos personales
+  y queda guardado en la base de datos. Esperado: 201.
+}

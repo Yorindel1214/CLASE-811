@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "Crediya-HU1",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

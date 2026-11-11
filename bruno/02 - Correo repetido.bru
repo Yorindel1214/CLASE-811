@@ -1,0 +1,36 @@
+meta {
+  name: 02 - Correo repetido
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8080/api/v1/usuarios
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nombres": "Carlos",
+    "apellidos": "Ruiz",
+    "correo_electronico": "{{correoNuevo}}",
+    "salario_base": 5000000
+  }
+}
+
+tests {
+  test("responde 409 Conflict", function () {
+    expect(res.getStatus()).to.equal(409);
+  });
+
+  test("explica que el correo ya existe", function () {
+    expect(res.getBody().error).to.equal("El correo electrónico ya está registrado");
+  });
+}
+
+docs {
+  Criterio: el correo no puede estar registrado por otro solicitante.
+  Usa el mismo correo de la prueba 01, por eso se ejecuta despues de ella.
+  Esperado: 409.
+}
