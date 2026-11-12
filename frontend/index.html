@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crediya · Inicio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <header class="cabecera">
+    <div class="contenedor cabecera__fila">
+      <a class="marca" href="index.html">
+        <svg viewBox="0 0 40 40" aria-hidden="true">
+          <rect width="40" height="40" rx="12" fill="#0d7a6f"/>
+          <path d="M26.5 14.2a8.5 8.5 0 1 0 0 11.6" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/>
+          <circle cx="27.5" cy="20" r="2.6" fill="#f2a93b"/>
+        </svg>
+        Crediya
+      </a>
+      <nav class="nav" aria-label="Principal">
+        <a class="activo" href="index.html">Inicio</a>
+        <a href="registrar.html">Usuarios</a>
+        <a href="acerca.html">Acerca de</a>
+      </nav>
+      <span class="estado-api" id="estadoApi">
+        <span class="estado-api__punto"></span>
+        <span class="estado-api__texto">Verificando API…</span>
+      </span>
+    </div>
+  </header>
+
+  <main>
+    <section class="contenedor hero">
+      <div>
+        <span class="etiqueta">Historia de usuario 1</span>
+        <h1>Registra a tus <span>solicitantes</span> de crédito</h1>
+        <p>
+          Guarda los datos personales de cada cliente potencial. El sistema revisa que la
+          información esté completa y sea válida antes de guardarla de forma permanente.
+        </p>
+        <div class="hero__acciones">
+          <a class="boton" href="registrar.html">Registrar solicitante <span aria-hidden="true">→</span></a>
+          <a class="boton boton--fantasma" href="http://localhost:8080/swagger-ui/index.html" target="_blank" rel="noopener">Ver documentación API</a>
+        </div>
+      </div>
+
+      <!-- Tarjeta de ejemplo: muestra cómo queda un solicitante registrado -->
+      <div class="hero__visual" aria-hidden="true">
+        <div class="ficha">
+          <div class="ficha__cabeza">
+            <div class="avatar">AP</div>
+            <div>
+              <p class="ficha__nombre">Ana Pérez Gómez</p>
+              <p class="ficha__correo">ana@correo.com</p>
+            </div>
+          </div>
+          <dl class="ficha__datos">
+            <div><dt>Salario base</dt><dd>$ 3.500.000</dd></div>
+            <div><dt>Teléfono</dt><dd>300 123 4567</dd></div>
+            <div><dt>Nacimiento</dt><dd>10/03/1995</dd></div>
+            <div><dt>Estado</dt><dd>Registrado</dd></div>
+          </dl>
+        </div>
+        <span class="chip-flotante chip-flotante--arriba">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          201 · Creado
+        </span>
+        <span class="chip-flotante chip-flotante--abajo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#0d7a6f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Guardado transaccional
+        </span>
+      </div>
+    </section>
+
+    <section class="contenedor seccion">
+      <h2 class="seccion__titulo">¿Qué quieres hacer?</h2>
+      <p class="seccion__texto">Acciones disponibles en esta historia de usuario.</p>
+
+      <div class="acciones">
+        <a class="accion accion--principal" href="registrar.html">
+          <span class="accion__icono">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>
+          </span>
+          <h3>Registrar usuario</h3>
+          <p>Crea un nuevo solicitante con sus datos personales, de contacto y su salario base.</p>
+          <span class="accion__enlace">Comenzar →</span>
+        </a>
+
+        <a class="accion" href="http://localhost:8080/swagger-ui/index.html" target="_blank" rel="noopener">
+          <span class="accion__icono">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg>
+          </span>
+          <h3>Documentación de la API</h3>
+          <p>Consulta el endpoint en Swagger, con ejemplos y todas las respuestas posibles.</p>
+          <span class="accion__enlace">Abrir Swagger ↗</span>
+        </a>
+
+        <a class="accion" href="acerca.html">
+          <span class="accion__icono">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5M3 17l9 5 9-5"/></svg>
+          </span>
+          <h3>Cómo está construido</h3>
+          <p>Conoce las capas de la arquitectura hexagonal y el recorrido de cada registro.</p>
+          <span class="accion__enlace">Ver detalles →</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="contenedor seccion">
+      <h2 class="seccion__titulo">Reglas que valida el sistema</h2>
+      <p class="seccion__texto">Los criterios de aceptación de la historia, aplicados en cada registro.</p>
+
+      <ul class="reglas">
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg>
+          <div><strong>Campos obligatorios</strong><span>Nombres, apellidos, correo y salario no pueden estar vacíos.</span></div>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg>
+          <div><strong>Correo válido y único</strong><span>Debe tener formato de email y no estar registrado antes.</span></div>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg>
+          <div><strong>Salario en rango</strong><span>Un valor numérico entre $0 y $15.000.000.</span></div>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg>
+          <div><strong>Guardado permanente</strong><span>Se almacena en PostgreSQL con una operación transaccional.</span></div>
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor">
+      <span>Crediya · Microservicio de autenticación</span>
+      <span>Proyecto Clase-811</span>
+    </div>
+  </footer>
+
+  <script src="js/comun.js"></script>
+</body>
+</html>

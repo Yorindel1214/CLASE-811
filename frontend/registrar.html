@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crediya · Registrar solicitante</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <header class="cabecera">
+    <div class="contenedor cabecera__fila">
+      <a class="marca" href="index.html">
+        <svg viewBox="0 0 40 40" aria-hidden="true">
+          <rect width="40" height="40" rx="12" fill="#0d7a6f"/>
+          <path d="M26.5 14.2a8.5 8.5 0 1 0 0 11.6" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/>
+          <circle cx="27.5" cy="20" r="2.6" fill="#f2a93b"/>
+        </svg>
+        Crediya
+      </a>
+      <nav class="nav" aria-label="Principal">
+        <a href="index.html">Inicio</a>
+        <a class="activo" href="registrar.html">Usuarios</a>
+        <a href="acerca.html">Acerca de</a>
+      </nav>
+      <span class="estado-api" id="estadoApi">
+        <span class="estado-api__punto"></span>
+        <span class="estado-api__texto">Verificando API…</span>
+      </span>
+    </div>
+  </header>
+
+  <main class="contenedor pagina">
+    <a class="volver" href="index.html">← Volver al inicio</a>
+
+    <div class="pagina__encabezado">
+      <span class="etiqueta">HU1 · <span class="codigo">POST /api/v1/usuarios</span></span>
+      <h1>Registrar solicitante</h1>
+      <p>Completa los datos del cliente potencial. Los campos con <span class="obligatorio">*</span> son obligatorios.</p>
+    </div>
+
+    <div class="registro">
+      <section class="panel">
+        <!-- Aquí se muestra el resultado: éxito o el mensaje de error que devuelve la API -->
+        <div id="mensaje" role="status" aria-live="polite"></div>
+
+        <!-- Resultado de un registro exitoso (se muestra solo cuando la API responde 201) -->
+        <div id="resultado" hidden>
+          <div class="resultado__cabeza">
+            <div class="avatar" id="iniciales"></div>
+            <div>
+              <h2 id="nombreCompleto"></h2>
+              <p id="correoResultado"></p>
+            </div>
+          </div>
+          <dl class="resumen" id="resumen"></dl>
+          <div class="resultado__acciones">
+            <button type="button" class="boton" id="registrarOtro">Registrar otro solicitante</button>
+            <a class="boton boton--fantasma" href="index.html">Ir al inicio</a>
+          </div>
+        </div>
+
+        <!-- novalidate: las validaciones las hace la API y aquí mostramos su mensaje -->
+        <form id="formulario" novalidate>
+          <fieldset class="grupo">
+            <legend><span class="paso">1</span> Datos personales</legend>
+            <div class="campos">
+              <div class="campo">
+                <label for="nombres">Nombres <span class="obligatorio">*</span></label>
+                <input id="nombres" name="nombres" type="text" placeholder="Ana María" autocomplete="given-name">
+              </div>
+              <div class="campo">
+                <label for="apellidos">Apellidos <span class="obligatorio">*</span></label>
+                <input id="apellidos" name="apellidos" type="text" placeholder="Pérez Gómez" autocomplete="family-name">
+              </div>
+              <div class="campo">
+                <label for="fecha_nacimiento">Fecha de nacimiento</label>
+                <input id="fecha_nacimiento" name="fecha_nacimiento" type="date">
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="grupo">
+            <legend><span class="paso">2</span> Contacto</legend>
+            <div class="campos">
+              <div class="campo">
+                <label for="correo_electronico">Correo electrónico <span class="obligatorio">*</span></label>
+                <input id="correo_electronico" name="correo_electronico" type="email" placeholder="ana@correo.com" autocomplete="email">
+              </div>
+              <div class="campo">
+                <label for="telefono">Teléfono</label>
+                <input id="telefono" name="telefono" type="tel" placeholder="3001234567" autocomplete="tel">
+              </div>
+              <div class="campo campo--ancho">
+                <label for="direccion">Dirección</label>
+                <input id="direccion" name="direccion" type="text" placeholder="Calle 10 # 20-30" autocomplete="street-address">
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="grupo">
+            <legend><span class="paso">3</span> Información financiera</legend>
+            <div class="campos">
+              <div class="campo">
+                <label for="salario_base">Salario base <span class="obligatorio">*</span></label>
+                <div class="con-prefijo">
+                  <span>$</span>
+                  <input id="salario_base" name="salario_base" type="number" min="0" max="15000000" step="1" placeholder="3500000">
+                </div>
+                <small id="salarioAyuda">Entre $0 y $15.000.000</small>
+              </div>
+            </div>
+          </fieldset>
+
+          <div class="formulario__acciones">
+            <a class="boton boton--fantasma" href="index.html">Cancelar</a>
+            <button type="submit" class="boton" id="botonRegistrar">Registrar solicitante</button>
+          </div>
+        </form>
+      </section>
+
+      <aside class="lateral">
+        <div class="panel">
+          <h2>Antes de registrar</h2>
+          <ul class="lista-check">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Nombres y apellidos van por separado.</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>El correo debe tener formato válido y no estar registrado.</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>El salario base va entre $0 y $15.000.000.</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Fecha, teléfono y dirección son opcionales.</li>
+          </ul>
+        </div>
+
+        <div class="panel">
+          <h2>Respuestas de la API</h2>
+          <ul class="respuestas">
+            <li><span class="cod cod--201">201</span>Solicitante registrado</li>
+            <li><span class="cod cod--400">400</span>Datos inválidos o incompletos</li>
+            <li><span class="cod cod--409">409</span>El correo ya está registrado</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor">
+      <span>Crediya · Microservicio de autenticación</span>
+      <span>Proyecto Clase-811</span>
+    </div>
+  </footer>
+
+  <script src="js/comun.js"></script>
+  <script src="js/registrar.js"></script>
+</body>
+</html>

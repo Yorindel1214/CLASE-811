@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crediya · Acerca de</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <header class="cabecera">
+    <div class="contenedor cabecera__fila">
+      <a class="marca" href="index.html">
+        <svg viewBox="0 0 40 40" aria-hidden="true">
+          <rect width="40" height="40" rx="12" fill="#0d7a6f"/>
+          <path d="M26.5 14.2a8.5 8.5 0 1 0 0 11.6" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/>
+          <circle cx="27.5" cy="20" r="2.6" fill="#f2a93b"/>
+        </svg>
+        Crediya
+      </a>
+      <nav class="nav" aria-label="Principal">
+        <a href="index.html">Inicio</a>
+        <a href="registrar.html">Usuarios</a>
+        <a class="activo" href="acerca.html">Acerca de</a>
+      </nav>
+      <span class="estado-api" id="estadoApi">
+        <span class="estado-api__punto"></span>
+        <span class="estado-api__texto">Verificando API…</span>
+      </span>
+    </div>
+  </header>
+
+  <main class="contenedor pagina">
+    <a class="volver" href="index.html">← Volver al inicio</a>
+
+    <div class="pagina__encabezado">
+      <span class="etiqueta">Microservicio de autenticación</span>
+      <h1>Cómo está construido</h1>
+      <p>
+        El proyecto sigue la arquitectura hexagonal: las reglas del negocio están separadas
+        de la parte técnica (la web, la base de datos), así una puede cambiar sin dañar la otra.
+      </p>
+    </div>
+
+    <section class="panel">
+      <h2>Recorrido de un registro</h2>
+      <ol class="flujo">
+        <li><strong>Página web</strong><span>El asesor llena el formulario y lo envía.</span></li>
+        <li><strong>UsuarioController</strong><span>Recibe la petición POST /api/v1/usuarios.</span></li>
+        <li><strong>RegistrarUsuarioUseCase</strong><span>Revisa las reglas: campos, correo y salario.</span></li>
+        <li><strong>JPARepositoryAdapter</strong><span>Guarda con @Transactional: todo o nada.</span></li>
+        <li><strong>PostgreSQL</strong><span>Los datos quedan guardados de forma permanente.</span></li>
+      </ol>
+    </section>
+
+    <div class="dos-columnas">
+      <section class="panel">
+        <h2>Si algo sale mal</h2>
+        <ul class="respuestas">
+          <li><span class="cod cod--400">400</span>Un dato falta o no cumple las reglas.</li>
+          <li><span class="cod cod--409">409</span>El correo ya pertenece a otro solicitante.</li>
+          <li><span class="cod cod--500">500</span>Error inesperado, con un mensaje claro y sin detalles técnicos.</li>
+        </ul>
+        <p style="margin: 18px 0 0; color: var(--texto-suave)">
+          El GlobalExceptionHandler convierte cada error en un mensaje entendible.
+        </p>
+      </section>
+
+      <section class="panel">
+        <h2>Tecnologías</h2>
+        <ul class="tecnologias">
+          <li>Java</li>
+          <li>Spring Boot</li>
+          <li>Clean Architecture</li>
+          <li>JPA</li>
+          <li>PostgreSQL</li>
+          <li>Docker</li>
+          <li>Swagger / OpenAPI</li>
+          <li>Bruno</li>
+          <li>HTML, CSS y JavaScript</li>
+        </ul>
+        <p style="margin: 18px 0 0">
+          Documentación completa en
+          <a href="http://localhost:8080/swagger-ui/index.html" target="_blank" rel="noopener">Swagger UI ↗</a>
+        </p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor">
+      <span>Crediya · Microservicio de autenticación</span>
+      <span>Proyecto Clase-811</span>
+    </div>
+  </footer>
+
+  <script src="js/comun.js"></script>
+</body>
+</html>
