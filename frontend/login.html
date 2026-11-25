@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crediya · Iniciar sesión</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <header class="cabecera">
+    <div class="contenedor cabecera__fila">
+      <a class="marca" href="index.html">
+        <svg viewBox="0 0 40 40" aria-hidden="true">
+          <rect width="40" height="40" rx="12" fill="#0d7a6f"/>
+          <path d="M26.5 14.2a8.5 8.5 0 1 0 0 11.6" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/>
+          <circle cx="27.5" cy="20" r="2.6" fill="#f2a93b"/>
+        </svg>
+        Crediya
+      </a>
+      <nav class="nav" aria-label="Principal">
+        <a href="index.html">Inicio</a>
+        <a href="registrar.html">Usuarios</a>
+        <a class="activo" href="login.html">Iniciar sesión</a>
+      </nav>
+      <span class="estado-api" id="estadoApi">
+        <span class="estado-api__punto"></span>
+        <span class="estado-api__texto">Verificando API…</span>
+      </span>
+    </div>
+  </header>
+
+  <main class="contenedor pagina">
+    <div class="pagina__encabezado">
+      <span class="etiqueta">HU3 · <span class="codigo">POST /api/v1/login</span></span>
+      <h1>Iniciar sesión</h1>
+      <p>Ingresa con tu correo y clave. Lo que puedes hacer depende de tu rol (administrador, asesor o cliente).</p>
+    </div>
+
+    <div class="registro">
+      <section class="panel">
+        <div id="mensaje" role="status" aria-live="polite"></div>
+        <form id="formularioLogin" novalidate>
+          <fieldset class="grupo">
+            <legend><span class="paso">1</span> Credenciales</legend>
+            <div class="campos">
+              <div class="campo campo--ancho">
+                <label for="correo">Correo electrónico</label>
+                <input id="correo" type="email" placeholder="admin@crediya.com" autocomplete="username">
+              </div>
+              <div class="campo campo--ancho">
+                <label for="clave">Clave</label>
+                <input id="clave" type="password" autocomplete="current-password">
+              </div>
+            </div>
+          </fieldset>
+          <div class="formulario__acciones">
+            <button type="submit" class="boton" id="botonLogin">Iniciar sesión</button>
+          </div>
+        </form>
+      </section>
+
+      <aside class="lateral">
+        <div class="panel">
+          <h2>Permisos por rol</h2>
+          <ul class="respuestas">
+            <li><span class="cod cod--201">ADMIN</span>Registra usuarios de cualquier rol</li>
+            <li><span class="cod cod--201">ASESOR</span>Registra clientes y revisa solicitudes</li>
+            <li><span class="cod cod--409">CLIENTE</span>Crea solicitudes a su nombre</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h2>Respuestas de la API</h2>
+          <ul class="respuestas">
+            <li><span class="cod cod--201">200</span>Sesión iniciada, devuelve el token</li>
+            <li><span class="cod cod--400">400</span>Correo o clave vacíos</li>
+            <li><span class="cod cod--409">401</span>Correo o clave incorrectos</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor">
+      <span>Crediya · Microservicio de autenticación</span>
+      <span>Proyecto Clase-811</span>
+    </div>
+  </footer>
+
+  <script src="js/comun.js"></script>
+  <script src="js/sesion.js"></script>
+  <script src="js/login.js"></script>
+</body>
+</html>

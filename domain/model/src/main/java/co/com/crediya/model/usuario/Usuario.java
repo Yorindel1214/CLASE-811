@@ -18,4 +18,8 @@ public class Usuario {
     private String telefono;
     private String correoElectronico;
     private BigDecimal salarioBase;
+    // HU3: datos para iniciar sesión y saber qué puede hacer el usuario
+    private String documentoIdentidad;
+    private String clave;
+    private Rol rol;
 }

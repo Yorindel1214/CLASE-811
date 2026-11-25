@@ -7,7 +7,11 @@ meta {
 post {
   url: http://localhost:8080/api/v1/usuarios
   body: json
-  auth: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenAdmin}}
 }
 
 body:json {
@@ -15,6 +19,8 @@ body:json {
     "nombres": "Carlos",
     "apellidos": "Ruiz",
     "correo_electronico": "{{correoNuevo}}",
+    "documento_identidad": "5555555555",
+    "clave": "Clave12345",
     "salario_base": 5000000
   }
 }

@@ -1,6 +1,9 @@
 package co.com.crediya.api;
 
+import co.com.crediya.model.autenticacion.exceptions.CredencialesInvalidasException;
+import co.com.crediya.model.usuario.exceptions.AccesoDenegadoException;
 import co.com.crediya.model.usuario.exceptions.CorreoYaRegistradoException;
+import co.com.crediya.model.usuario.exceptions.DocumentoYaRegistradoException;
 import co.com.crediya.model.usuario.exceptions.ValidacionException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,6 +32,25 @@ public class GlobalExceptionHandler {
         log.warn("Conflicto: {}", e.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(Map.of("error", "El correo electrónico ya está registrado"));
+    }
+
+    @ExceptionHandler(DocumentoYaRegistradoException.class)
+    public ResponseEntity<Map<String, String>> documentoRepetido(DocumentoYaRegistradoException e) {
+        log.warn("Conflicto: {}", e.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Map.of("error", "El documento de identidad ya está registrado"));
+    }
+
+    @ExceptionHandler(CredencialesInvalidasException.class)
+    public ResponseEntity<Map<String, String>> credencialesInvalidas(CredencialesInvalidasException e) {
+        log.warn("Inicio de sesión fallido: {}", e.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", e.getMessage()));
+    }
+
+    @ExceptionHandler(AccesoDenegadoException.class)
+    public ResponseEntity<Map<String, String>> accesoDenegado(AccesoDenegadoException e) {
+        log.warn("Acceso denegado: {}", e.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", e.getMessage()));
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)

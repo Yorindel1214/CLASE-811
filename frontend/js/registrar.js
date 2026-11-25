@@ -1,6 +1,9 @@
 // Endpoint de la historia de usuario 1 (API_BASE viene de comun.js)
 const API_URL = `${API_BASE}/api/v1/usuarios`;
 
+// HU3: solo un ADMIN o ASESOR con sesión iniciada puede registrar (sesion.js)
+requerirSesion(["ADMIN", "ASESOR"]);
+
 const formulario = document.getElementById("formulario");
 const boton = document.getElementById("botonRegistrar");
 const mensaje = document.getElementById("mensaje");
@@ -37,6 +40,9 @@ function leerFormulario() {
     telefono: valorONull("telefono"),
     correo_electronico: document.getElementById("correo_electronico").value.trim(),
     salario_base: salario.value === "" ? null : Number(salario.value),
+    documento_identidad: valorONull("documento_identidad"),
+    clave: document.getElementById("clave").value,
+    rol: document.getElementById("rol").value,
   };
 }
 
@@ -66,6 +72,9 @@ function resaltarCampo(textoError) {
     ["apellidos", "apellidos"],
     ["correo", "correo_electronico"],
     ["salario", "salario_base"],
+    ["documento", "documento_identidad"],
+    ["clave", "clave"],
+    ["rol", "rol"],
   ];
   for (const [palabra, id] of reglas) {
     if (texto.includes(palabra)) {
@@ -91,6 +100,8 @@ function mostrarUsuarioCreado(usuario) {
 
   const filas = [
     ["Id", usuario.id],
+    ["Rol", usuario.rol],
+    ["Documento", usuario.documento_identidad],
     ["Salario base", pesos(usuario.salario_base)],
     ["Fecha de nacimiento", formatearFecha(usuario.fecha_nacimiento)],
     ["Teléfono", usuario.telefono],
@@ -119,10 +130,15 @@ formulario.addEventListener("submit", async (evento) => {
   try {
     const respuesta = await fetch(API_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: cabecerasConToken(),
       body: JSON.stringify(leerFormulario()),
     });
     const datos = await respuesta.json().catch(() => ({}));
+
+    if (respuesta.status === 401) {
+      cerrarSesion(); // token vencido o inválido: volver a iniciar sesión
+      return;
+    }
 
     if (respuesta.status === 201) {
       mostrarMensaje("exito", "¡Solicitante registrado!", ` Quedó guardado con el id ${datos.id}.`);

@@ -1,0 +1,33 @@
+meta {
+  name: 06 - Login clave incorrecta
+  type: http
+  seq: 6
+}
+
+post {
+  url: http://localhost:8080/api/v1/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "correo_electronico": "admin@crediya.com",
+    "clave": "clave-equivocada"
+  }
+}
+
+tests {
+  test("responde 401 Unauthorized", function () {
+    expect(res.getStatus()).to.equal(401);
+  });
+
+  test("no dice si falló el correo o la clave", function () {
+    expect(res.getBody().error).to.equal("Correo o clave incorrectos");
+  });
+}
+
+docs {
+  HU3: se valida usuario y contraseña. Los intentos son ilimitados: se puede repetir
+  esta petición las veces que sea y luego iniciar sesión normalmente. Esperado: 401.
+}

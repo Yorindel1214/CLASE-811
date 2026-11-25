@@ -26,4 +26,15 @@ management:
       probes:
         enabled: true
 cors:
-  allowed-origins: "http://localhost:4200,http://localhost:8080,http://localhost:8000"
+  # 8000 = frontend de Autenticación, 8001 = frontend de Solicitudes (también inicia sesión aquí)
+  allowed-origins: "http://localhost:4200,http://localhost:8080,http://localhost:8000,http://localhost:8001"
+# HU3: JWT. El microservicio de Solicitudes debe usar EXACTAMENTE el mismo secreto para validar los tokens.
+jwt:
+  secreto: "${JWT_SECRETO:crediya-secreto-de-desarrollo-cambiar-en-produccion-2026}"
+  expiracion-minutos: 60
+# HU3: administrador que se crea al arrancar si no existe
+crediya:
+  admin:
+    correo: "${ADMIN_CORREO:admin@crediya.com}"
+    documento: "${ADMIN_DOCUMENTO:1000000001}"
+    clave: "${ADMIN_CLAVE:Admin12345}"

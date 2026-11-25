@@ -6,13 +6,16 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Schema(description = "Datos del solicitante registrado")
+/**
+ * Nunca incluye la clave.
+ */
+@Schema(description = "Datos del usuario registrado")
 public record UsuarioResponse(
         @Schema(description = "Identificador generado por el sistema", example = "1")
         Long id,
-        @Schema(description = "Nombres del solicitante", example = "Ana María")
+        @Schema(description = "Nombres del usuario", example = "Ana María")
         String nombres,
-        @Schema(description = "Apellidos del solicitante", example = "Pérez Gómez")
+        @Schema(description = "Apellidos del usuario", example = "Pérez Gómez")
         String apellidos,
         @Schema(description = "Fecha de nacimiento (AAAA-MM-DD)", example = "1995-03-10")
         @JsonProperty("fecha_nacimiento") LocalDate fechaNacimiento,
@@ -23,5 +26,9 @@ public record UsuarioResponse(
         @Schema(description = "Correo electrónico", example = "ana@correo.com")
         @JsonProperty("correo_electronico") String correoElectronico,
         @Schema(description = "Salario base", example = "3500000")
-        @JsonProperty("salario_base") BigDecimal salarioBase) {
+        @JsonProperty("salario_base") BigDecimal salarioBase,
+        @Schema(description = "Documento de identidad", example = "1023456789")
+        @JsonProperty("documento_identidad") String documentoIdentidad,
+        @Schema(description = "Rol del usuario", example = "CLIENTE")
+        String rol) {
 }

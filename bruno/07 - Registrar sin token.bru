@@ -1,0 +1,36 @@
+meta {
+  name: 07 - Registrar sin token
+  type: http
+  seq: 7
+}
+
+post {
+  url: http://localhost:8080/api/v1/usuarios
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nombres": "Sin",
+    "apellidos": "Sesion",
+    "correo_electronico": "sinsesion@correo.com",
+    "documento_identidad": "1234567890",
+    "clave": "Clave12345",
+    "salario_base": 1000000
+  }
+}
+
+tests {
+  test("responde 401 Unauthorized", function () {
+    expect(res.getStatus()).to.equal(401);
+  });
+
+  test("pide iniciar sesión", function () {
+    expect(res.getBody().error).to.equal("Debe iniciar sesión para acceder a este recurso");
+  });
+}
+
+docs {
+  HU3: registrar usuarios exige un token de ADMIN o ASESOR. Sin token: 401.
+}

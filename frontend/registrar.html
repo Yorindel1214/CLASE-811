@@ -25,6 +25,7 @@
         <a class="activo" href="registrar.html">Usuarios</a>
         <a href="acerca.html">Acerca de</a>
       </nav>
+      <span class="sesion-usuario" id="usuarioSesion"></span>
       <span class="estado-api" id="estadoApi">
         <span class="estado-api__punto"></span>
         <span class="estado-api__texto">Verificando API…</span>
@@ -36,9 +37,9 @@
     <a class="volver" href="index.html">← Volver al inicio</a>
 
     <div class="pagina__encabezado">
-      <span class="etiqueta">HU1 · <span class="codigo">POST /api/v1/usuarios</span></span>
-      <h1>Registrar solicitante</h1>
-      <p>Completa los datos del cliente potencial. Los campos con <span class="obligatorio">*</span> son obligatorios.</p>
+      <span class="etiqueta">HU1 + HU3 · <span class="codigo">POST /api/v1/usuarios</span> · solo ADMIN / ASESOR</span>
+      <h1>Registrar usuario</h1>
+      <p>Completa los datos del usuario. Los campos con <span class="obligatorio">*</span> son obligatorios.</p>
     </div>
 
     <div class="registro">
@@ -78,6 +79,28 @@
               <div class="campo">
                 <label for="fecha_nacimiento">Fecha de nacimiento</label>
                 <input id="fecha_nacimiento" name="fecha_nacimiento" type="date">
+              </div>
+              <div class="campo">
+                <label for="documento_identidad">Documento de identidad <span class="obligatorio">*</span></label>
+                <input id="documento_identidad" name="documento_identidad" type="text" inputmode="numeric" placeholder="1023456789">
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="grupo">
+            <legend><span class="paso">★</span> Acceso al sistema (HU3)</legend>
+            <div class="campos">
+              <div class="campo">
+                <label for="clave">Clave <span class="obligatorio">*</span></label>
+                <input id="clave" name="clave" type="password" autocomplete="new-password" placeholder="Mínimo 8 caracteres">
+              </div>
+              <div class="campo">
+                <label for="rol">Rol</label>
+                <select id="rol" name="rol">
+                  <option value="CLIENTE">Cliente</option>
+                  <option value="ASESOR">Asesor (solo ADMIN)</option>
+                  <option value="ADMIN">Administrador (solo ADMIN)</option>
+                </select>
               </div>
             </div>
           </fieldset>
@@ -137,7 +160,9 @@
           <ul class="respuestas">
             <li><span class="cod cod--201">201</span>Solicitante registrado</li>
             <li><span class="cod cod--400">400</span>Datos inválidos o incompletos</li>
-            <li><span class="cod cod--409">409</span>El correo ya está registrado</li>
+            <li><span class="cod cod--409">401</span>Sin sesión o token vencido</li>
+            <li><span class="cod cod--409">403</span>Tu rol no puede registrar ese usuario</li>
+            <li><span class="cod cod--409">409</span>El correo o documento ya está registrado</li>
           </ul>
         </div>
       </aside>
@@ -152,6 +177,7 @@
   </footer>
 
   <script src="js/comun.js"></script>
+  <script src="js/sesion.js"></script>
   <script src="js/registrar.js"></script>
 </body>
 </html>

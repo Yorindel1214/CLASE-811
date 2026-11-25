@@ -5,10 +5,11 @@ import co.com.crediya.model.usuario.exceptions.CorreoYaRegistradoException;
 import co.com.crediya.model.usuario.gateways.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Slf4j
 @Repository
@@ -16,16 +17,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class JPARepositoryAdapter implements UsuarioRepository {
 
     private final JPARepository repository;
-    private final ObjectMapper mapper;
 
     @Override
     @Transactional
     public Usuario guardar(Usuario usuario) {
-        log.info("Guardando usuario con correo {}", usuario.getCorreoElectronico());
+        log.info("Guardando usuario con correo {} y rol {}", usuario.getCorreoElectronico(), usuario.getRol());
         try {
-            UsuarioEntity guardado = repository.saveAndFlush(mapper.map(usuario, UsuarioEntity.class));
+            UsuarioEntity guardado = repository.saveAndFlush(aEntidad(usuario));
             log.info("Usuario guardado con id {}", guardado.getId());
-            return mapper.map(guardado, Usuario.class);
+            return aDominio(guardado);
         } catch (DataIntegrityViolationException e) {
             log.warn("Violación de integridad al guardar usuario: {}", e.getMessage());
             throw new CorreoYaRegistradoException(usuario.getCorreoElectronico());
@@ -36,5 +36,49 @@ public class JPARepositoryAdapter implements UsuarioRepository {
     @Transactional(readOnly = true)
     public boolean existePorCorreo(String correoElectronico) {
         return repository.existsByCorreoElectronico(correoElectronico);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean existePorDocumento(String documentoIdentidad) {
+        return repository.existsByDocumentoIdentidad(documentoIdentidad);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Usuario> buscarPorCorreo(String correoElectronico) {
+        log.info("Buscando usuario con correo {}", correoElectronico);
+        return repository.findByCorreoElectronico(correoElectronico).map(this::aDominio);
+    }
+
+    private UsuarioEntity aEntidad(Usuario u) {
+        return new UsuarioEntity(
+                u.getId(),
+                u.getNombres(),
+                u.getApellidos(),
+                u.getFechaNacimiento(),
+                u.getDireccion(),
+                u.getTelefono(),
+                u.getCorreoElectronico(),
+                u.getSalarioBase(),
+                u.getDocumentoIdentidad(),
+                u.getClave(),
+                u.getRol());
+    }
+
+    private Usuario aDominio(UsuarioEntity e) {
+        return Usuario.builder()
+                .id(e.getId())
+                .nombres(e.getNombres())
+                .apellidos(e.getApellidos())
+                .fechaNacimiento(e.getFechaNacimiento())
+                .direccion(e.getDireccion())
+                .telefono(e.getTelefono())
+                .correoElectronico(e.getCorreoElectronico())
+                .salarioBase(e.getSalarioBase())
+                .documentoIdentidad(e.getDocumentoIdentidad())
+                .clave(e.getClave())
+                .rol(e.getRol())
+                .build();
     }
 }

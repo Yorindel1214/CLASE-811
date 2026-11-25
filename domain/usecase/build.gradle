@@ -1,3 +1,8 @@
 dependencies {
     implementation project(':model')
 }
+
+// Las pruebas de los casos de uso están escritas con JUnit 5 (Jupiter)
+tasks.named('test') {
+    useJUnitPlatform()
+}

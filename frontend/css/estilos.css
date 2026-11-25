@@ -1008,3 +1008,8 @@ main {
     padding: 28px 8px;
   }
 }
+
+/* HU3: usuario conectado en la cabecera */
+.sesion-usuario { display: inline-flex; align-items: center; gap: .5rem; font-size: .85rem; color: inherit; }
+.boton--mini { padding: .3rem .75rem; font-size: .8rem; }
+select { font: inherit; padding: .65rem .8rem; border-radius: 10px; border: 1px solid #d5dbe1; background: #fff; width: 100%; }

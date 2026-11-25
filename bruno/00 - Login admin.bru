@@ -1,0 +1,40 @@
+meta {
+  name: 00 - Login admin
+  type: http
+  seq: 0
+}
+
+post {
+  url: http://localhost:8080/api/v1/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "correo_electronico": "admin@crediya.com",
+    "clave": "Admin12345"
+  }
+}
+
+script:post-response {
+  // Guarda el token para que las demás peticiones lo envíen en Authorization: Bearer
+  bru.setVar("tokenAdmin", res.getBody().token);
+}
+
+tests {
+  test("responde 200 OK", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("devuelve un token con rol ADMIN", function () {
+    const body = res.getBody();
+    expect(body.token).to.be.a("string");
+    expect(body.rol).to.equal("ADMIN");
+  });
+}
+
+docs {
+  HU3: inicio de sesión con correo y clave. El administrador inicial se crea al arrancar
+  (crediya.admin.* en application.yaml). Ejecutar primero: guarda {{tokenAdmin}}.
+}
