@@ -5,6 +5,7 @@ import co.com.crediya.model.usuario.Usuario;
 import co.com.crediya.model.usuario.gateways.UsuarioRepository;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,6 +36,11 @@ public class FakeUsuarioRepository implements UsuarioRepository {
     @Override
     public Optional<Usuario> buscarPorCorreo(String correoElectronico) {
         return guardados.stream().filter(u -> correoElectronico.equals(u.getCorreoElectronico())).findFirst();
+    }
+
+    @Override
+    public List<Usuario> buscarPorCorreos(Collection<String> correos) {
+        return guardados.stream().filter(u -> correos.contains(u.getCorreoElectronico())).toList();
     }
 
     /** "Cifra" anteponiendo un prefijo: suficiente para verificar que no se guarda en texto plano. */

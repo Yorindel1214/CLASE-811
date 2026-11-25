@@ -3,6 +3,7 @@ package co.com.crediya.config;
 import co.com.crediya.model.autenticacion.gateways.ClaveEncriptador;
 import co.com.crediya.model.autenticacion.gateways.GeneradorToken;
 import co.com.crediya.model.usuario.gateways.UsuarioRepository;
+import co.com.crediya.usecase.buscarusuarios.BuscarUsuariosUseCase;
 import co.com.crediya.usecase.crearadministrador.CrearAdministradorUseCase;
 import co.com.crediya.usecase.login.LoginUseCase;
 import co.com.crediya.usecase.registrarusuario.RegistrarUsuarioUseCase;
@@ -23,6 +24,11 @@ public class UseCasesConfig {
                                          ClaveEncriptador claveEncriptador,
                                          GeneradorToken generadorToken) {
                 return new LoginUseCase(usuarioRepository, claveEncriptador, generadorToken);
+        }
+
+        @Bean
+        public BuscarUsuariosUseCase buscarUsuariosUseCase(UsuarioRepository usuarioRepository) {
+                return new BuscarUsuariosUseCase(usuarioRepository);
         }
 
         @Bean

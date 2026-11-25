@@ -9,6 +9,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -49,6 +51,13 @@ public class JPARepositoryAdapter implements UsuarioRepository {
     public Optional<Usuario> buscarPorCorreo(String correoElectronico) {
         log.info("Buscando usuario con correo {}", correoElectronico);
         return repository.findByCorreoElectronico(correoElectronico).map(this::aDominio);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Usuario> buscarPorCorreos(Collection<String> correos) {
+        log.info("Buscando {} usuarios por correo", correos.size());
+        return repository.findByCorreoElectronicoIn(correos).stream().map(this::aDominio).toList();
     }
 
     private UsuarioEntity aEntidad(Usuario u) {

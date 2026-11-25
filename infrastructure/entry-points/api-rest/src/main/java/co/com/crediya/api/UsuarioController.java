@@ -7,8 +7,10 @@ import co.com.crediya.model.usuario.Rol;
 import co.com.crediya.model.usuario.Usuario;
 import co.com.crediya.model.usuario.exceptions.AccesoDenegadoException;
 import co.com.crediya.model.usuario.exceptions.ValidacionException;
+import co.com.crediya.usecase.buscarusuarios.BuscarUsuariosUseCase;
 import co.com.crediya.usecase.registrarusuario.RegistrarUsuarioUseCase;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -19,12 +21,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Locale;
 
 @Slf4j
@@ -35,6 +40,7 @@ import java.util.Locale;
 public class UsuarioController {
 
     private final RegistrarUsuarioUseCase registrarUsuarioUseCase;
+    private final BuscarUsuariosUseCase buscarUsuariosUseCase;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -74,6 +80,29 @@ public class UsuarioController {
                 .build();
         Usuario guardado = registrarUsuarioUseCase.execute(usuario, rolSolicitante);
         return aRespuesta(guardado);
+    }
+
+    @GetMapping
+    @Operation(
+            summary = "Consultar usuarios por correo (ADMIN o ASESOR)",
+            description = "HU4: devuelve los usuarios cuyos correos se envían separados por coma. "
+                    + "Lo usa el microservicio de Solicitudes para conocer nombre y salario base de los clientes.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Usuarios encontrados (los correos que no existan se omiten)"),
+            @ApiResponse(responseCode = "400", description = "No se envió ningún correo",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "401", description = "No envió token o el token no es válido",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "403", description = "El rol no tiene permiso",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    public List<UsuarioResponse> buscarPorCorreos(
+            @Parameter(description = "Correos separados por coma", example = "ana@correo.com,luis@correo.com")
+            @RequestParam(name = "correos", required = false) List<String> correos,
+            @AuthenticationPrincipal Jwt token) {
+        log.info("GET /api/v1/usuarios recibido de {} para {} correos", token.getSubject(),
+                correos == null ? 0 : correos.size());
+        return buscarUsuariosUseCase.execute(correos).stream().map(UsuarioController::aRespuesta).toList();
     }
 
     static UsuarioResponse aRespuesta(Usuario u) {
