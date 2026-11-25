@@ -1013,3 +1013,7 @@ main {
 .sesion-usuario { display: inline-flex; align-items: center; gap: .5rem; font-size: .85rem; color: inherit; }
 .boton--mini { padding: .3rem .75rem; font-size: .8rem; }
 select { font: inherit; padding: .65rem .8rem; border-radius: 10px; border: 1px solid #d5dbe1; background: #fff; width: 100%; }
+/* Aviso cuando el rol no tiene permiso para la página */
+.acceso-denegado { text-align: center; padding: 2.5rem 1.5rem; }
+.acceso-denegado h1 { margin-bottom: .5rem; }
+.acceso-denegado__acciones { display: flex; flex-wrap: wrap; gap: .75rem; justify-content: center; margin-top: 1.5rem; }
